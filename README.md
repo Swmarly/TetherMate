@@ -26,33 +26,24 @@
 
 # TetherMate
 
-TetherMate lets you use a **wired** network connection over the USB cable on your VR headset. It creates a USB-based Wi‑Fi link so VR streaming apps like **Virtual Desktop** (normally wireless) can run over a stable, low-latency **wired** connection instead of regular Wi‑Fi. This is especially useful when you want the reliability of a cable while still using Wi‑Fi–based streaming features.
-
-A Windows 10/11 desktop application that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). The app watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
+TetherMate is a Windows 10/11 desktop app that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). It lets you use a **wired** network connection over USB while still supporting Wi‑Fi–based streaming apps like **Virtual Desktop**.
 
 ## Table of contents
 
-- [About the project](#about-the-project)
-  - [Built with](#built-with)
+- [What it does](#what-it-does)
 - [How it works](#how-it-works)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
+- [Requirements](#requirements)
 - [Usage](#usage)
-  - [Selecting a target device](#selecting-a-target-device)
-  - [Required headset settings (ADB debugging)](#required-headset-settings-adb-debugging)
+  - [Select a target device](#select-a-target-device)
+  - [Enable ADB debugging](#enable-adb-debugging)
   - [Troubleshooting](#troubleshooting)
 - [Build & package (single-file EXE)](#build--package-single-file-exe)
-- [Notes on compatibility](#notes-on-compatibility)
+- [Compatibility notes](#compatibility-notes)
+- [Built with](#built-with)
 
-## About the project
+## What it does
 
-TetherMate provides a stable, low-latency wired alternative for VR streaming apps by managing reverse tethering over USB. It bundles `adb` and `gnirehtet`, detects ready devices, and automatically starts or stops the tethering session based on headset state.
-
-### Built with
-
-- C# / .NET 8
-- WPF (Windows Presentation Foundation)
-- `adb` + `gnirehtet`
+TetherMate provides a stable, low-latency wired alternative for VR streaming by managing reverse tethering over USB. It watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
 
 ## How it works
 
@@ -66,23 +57,21 @@ TetherMate provides a stable, low-latency wired alternative for VR streaming app
 - `gnirehtet` auto-stops when the selected device is disconnected, unauthorized, offline, or otherwise not ready.
 - If you change the selected target device, the app stops the current session and starts a new one if the new device is ready.
 
-## Getting started
-
-### Prerequisites
+## Requirements
 
 - Windows 10/11
 - .NET 8 SDK (build-time only)
 
 ## Usage
 
-### Selecting a target device
+### Select a target device
 
 1. Connect your headset/device via USB and accept the ADB authorization prompt inside the headset.
 2. The device will appear in the **Connected ADB devices** list.
 3. Use the **Target device** dropdown to select the device to manage.
 4. Manual **Start / Stop / Restart** controls are provided for overrides.
 
-### Required headset settings (ADB debugging)
+### Enable ADB debugging
 
 The headset must have **Developer Mode** enabled and **USB/ADB debugging** turned on, or the app will never see it as ready.
 
@@ -122,7 +111,13 @@ This produces a single, self-contained EXE at:
 dotnet publish src/TetherMate/TetherMate.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeAllContentForSelfExtract=true -o dist
 ```
 
-## Notes on compatibility
+## Compatibility notes
 
 - The app targets Windows 10/11 and uses WPF for a native UI.
 - The `gnirehtet` CLI is invoked with the `-s <serial>` argument to target the selected device.
+
+## Built with
+
+- C# / .NET 8
+- WPF (Windows Presentation Foundation)
+- `adb` + `gnirehtet`
