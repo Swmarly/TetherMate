@@ -1,5 +1,7 @@
 # TetherMate
 
+![TetherMate logo](src/TetherMate/ico/TetherMateLogo.png)
+
 TetherMate lets you use a **wired** network connection over the USB cable on your VR headset. It creates a USB-based Wi‑Fi link so VR streaming apps like **Virtual Desktop** (normally wireless) can run over a stable, low-latency **wired** connection instead of regular Wi‑Fi. This is especially useful when you want the reliability of a cable while still using Wi‑Fi–based streaming features.
 
 A Windows 10/11 desktop application that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). The app watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
