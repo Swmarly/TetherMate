@@ -1,0 +1,61 @@
+# USB Wired Virtual Desktop
+
+A Windows 10/11 desktop application that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). The app watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
+
+## How it works
+
+- The app bundles the `adb` and `gnirehtet` binaries already in this repository.
+- On startup it extracts the binaries into `%LOCALAPPDATA%\UsbWiredVirtualDesktop\bin`.
+- A background monitor refreshes the device list via `adb devices -l` and probes ready devices using `adb shell getprop`.
+- A device is considered **ready** when:
+  - ADB reports it in `device` state, **and**
+  - It responds to `adb shell getprop` probes.
+- `gnirehtet` auto-starts when the selected device becomes ready and stays ready for a few seconds (debounce).
+- `gnirehtet` auto-stops when the selected device is disconnected, unauthorized, offline, or otherwise not ready.
+- If you change the selected target device, the app stops the current session and starts a new one if the new device is ready.
+
+## Selecting a target device
+
+1. Connect your headset/device via USB and accept the ADB authorization prompt inside the headset.
+2. The device will appear in the **Connected ADB devices** list.
+3. Use the **Target device** dropdown to select the device to manage.
+4. Manual **Start / Stop / Restart** controls are provided for overrides.
+
+## Troubleshooting
+
+- **Unauthorized**: Put on the headset/device and accept the USB debugging prompt.
+- **Offline**: Replug the USB cable or toggle USB debugging in the headset settings.
+- **No devices listed**:
+  - Ensure USB debugging is enabled.
+  - Try a different USB cable/port.
+  - Verify that the headset is powered on and awake.
+- **gnirehtet errors**: Check the log panel for the exact error output.
+
+## Build & package (single-file EXE)
+
+### Prerequisites
+- Windows 10/11
+- .NET 6 SDK (build-time only)
+
+### One-command build
+
+```powershell
+./build.ps1
+```
+
+This produces a single, self-contained EXE at:
+
+```
+./dist/UsbWiredVirtualDesktop.exe
+```
+
+### Manual build command
+
+```powershell
+dotnet publish src/UsbWiredVirtualDesktop/UsbWiredVirtualDesktop.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeAllContentForSelfExtract=true -o dist
+```
+
+## Notes on compatibility
+
+- The app targets Windows 10/11 and uses WPF for a native UI.
+- The `gnirehtet` CLI is invoked with the `-s <serial>` argument to target the selected device.
