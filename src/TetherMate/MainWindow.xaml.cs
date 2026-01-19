@@ -36,10 +36,10 @@ public partial class MainWindow : Window
             return;
         }
 
-        const int useImmersiveDarkMode = 1;
         const int dwmwaUseImmersiveDarkMode = 20;
         const int dwmwaUseImmersiveDarkModeBefore20H1 = 19;
 
+        var useImmersiveDarkMode = 1;
         _ = DwmSetWindowAttribute(hwnd, dwmwaUseImmersiveDarkMode, ref useImmersiveDarkMode, Marshal.SizeOf<int>());
         _ = DwmSetWindowAttribute(hwnd, dwmwaUseImmersiveDarkModeBefore20H1, ref useImmersiveDarkMode, Marshal.SizeOf<int>());
     }
