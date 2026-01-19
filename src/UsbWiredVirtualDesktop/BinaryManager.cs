@@ -33,11 +33,11 @@ public sealed class BinaryManager
 
         foreach (var (resourceName, outputPath) in resources)
         {
-            await ExtractIfNeededAsync(resourceName, outputPath, log);
+            await ExtractIfNeededAsync(resourceName, outputPath, _binDirectory, log);
         }
     }
 
-    private static async Task ExtractIfNeededAsync(string resourceName, string outputPath, Action<string> log)
+    private static async Task ExtractIfNeededAsync(string resourceName, string outputPath, string binDirectory, Action<string> log)
     {
         var assembly = Assembly.GetExecutingAssembly();
         await using var resource = assembly.GetManifestResourceStream(resourceName);
@@ -62,6 +62,6 @@ public sealed class BinaryManager
         Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);
         await using var fileStream = File.Create(outputPath);
         await resource.CopyToAsync(fileStream);
-        log($"Extracted {Path.GetFileName(outputPath)} to {_binDirectory}");
+        log($"Extracted {Path.GetFileName(outputPath)} to {binDirectory}");
     }
 }
