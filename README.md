@@ -1,4 +1,4 @@
-# USB Wired Virtual Desktop
+# TetherMate
 
 A Windows 10/11 desktop application that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). The app watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
 
