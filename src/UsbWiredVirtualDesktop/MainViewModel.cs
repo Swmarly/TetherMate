@@ -115,13 +115,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
             {
                 await RefreshDevicesAsync();
                 await EvaluateStateAsync();
+                await Task.Delay(TimeSpan.FromSeconds(2), token);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
             }
             catch (Exception ex)
             {
                 AppendLog($"Monitor error: {ex.Message}");
             }
-
-            await Task.Delay(TimeSpan.FromSeconds(2), token);
         }
     }
 
@@ -199,7 +202,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             if (_gnirehtetManager.IsRunning)
             {
-                await _gnirehtetManager.StopAsync(selected.Serial);
+                await _gnirehtetManager.StopAsync(_activeSerial ?? selected.Serial);
                 GnirehtetStatus = "Stopped";
             }
 
@@ -250,6 +253,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
         _ = _gnirehtetManager.StopAsync(SelectedDevice.Serial);
         GnirehtetStatus = "Stopped";
+        _activeSerial = null;
+        _readySince = null;
     }
 
     private void TriggerManualRestart()
