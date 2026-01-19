@@ -86,14 +86,17 @@ public sealed class MainViewModel : INotifyPropertyChanged
 
     public async Task InitializeAsync()
     {
+        AppendLog("Starting TetherMate...");
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var binDir = Path.Combine(appData, "TetherMate", "bin");
         _binaryManager = new BinaryManager(binDir);
         await _binaryManager.EnsureExtractedAsync(AppendLog);
+        AppendLog("Binary check complete.");
 
         _adbService = new AdbService(_binaryManager.AdbPath, AppendLog);
         _gnirehtetManager = new GnirehtetManager(_binaryManager.GnirehtetPath, AppendLog);
         await _gnirehtetManager.CleanupOrphansAsync();
+        AppendLog("Monitoring device status.");
 
         _ = Task.Run(() => MonitorLoopAsync(_cts.Token));
     }
