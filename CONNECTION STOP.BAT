@@ -1,0 +1,2 @@
+@echo off
+gnirehtet stop
