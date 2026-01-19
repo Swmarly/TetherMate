@@ -105,6 +105,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
         {
             _ = _gnirehtetManager.StopAsync(_activeSerial);
         }
+
+        if (_adbService is not null)
+        {
+            _ = _adbService.StopServerAsync();
+        }
     }
 
     private async Task MonitorLoopAsync(CancellationToken token)

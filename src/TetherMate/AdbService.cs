@@ -30,6 +30,15 @@ public sealed class AdbService
         return result.ExitCode == 0;
     }
 
+    public async Task StopServerAsync()
+    {
+        var result = await RunAdbAsync("kill-server", TimeSpan.FromSeconds(5));
+        if (result.ExitCode != 0)
+        {
+            _log($"ADB kill-server failed: {result.StandardError.Trim()}");
+        }
+    }
+
     public async Task<IReadOnlyList<DeviceInfo>> GetDevicesAsync()
     {
         var result = await RunAdbAsync("devices -l", TimeSpan.FromSeconds(5));
