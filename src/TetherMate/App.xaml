@@ -4,20 +4,20 @@
              StartupUri="MainWindow.xaml"
              ShutdownMode="OnMainWindowClose">
   <Application.Resources>
-    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0B0F14" />
-    <SolidColorBrush x:Key="SurfaceBrush" Color="#111827" />
-    <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="#151D2B" />
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#131A23" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#1F2937" />
+    <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="#2B3548" />
     <SolidColorBrush x:Key="PrimaryBrush" Color="#3B82F6" />
     <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#2563EB" />
     <SolidColorBrush x:Key="PrimaryPressedBrush" Color="#1D4ED8" />
     <SolidColorBrush x:Key="AccentBrush" Color="#10B981" />
     <SolidColorBrush x:Key="TextPrimaryBrush" Color="#E2E8F0" />
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#94A3B8" />
-    <SolidColorBrush x:Key="BorderBrush" Color="#1F2937" />
-    <SolidColorBrush x:Key="MutedBrush" Color="#0F172A" />
-    <SolidColorBrush x:Key="HighlightBrush" Color="#1E293B" />
-    <SolidColorBrush x:Key="ControlHoverBrush" Color="#1E293B" />
-    <SolidColorBrush x:Key="ControlPressedBrush" Color="#27324A" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#B0BFCE" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#334155" />
+    <SolidColorBrush x:Key="MutedBrush" Color="#1E293B" />
+    <SolidColorBrush x:Key="HighlightBrush" Color="#334155" />
+    <SolidColorBrush x:Key="ControlHoverBrush" Color="#334155" />
+    <SolidColorBrush x:Key="ControlPressedBrush" Color="#3B455C" />
 
     <Style TargetType="Window">
       <Setter Property="Background" Value="{StaticResource AppBackgroundBrush}" />
