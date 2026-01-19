@@ -39,6 +39,7 @@ TetherMate is a Windows 10/11 desktop app that automatically manages `adb` + `gn
   - [Troubleshooting](#troubleshooting)
 - [Build & package (single-file EXE)](#build--package-single-file-exe)
 - [Compatibility notes](#compatibility-notes)
+- [Third-party licenses](#third-party-licenses)
 - [Built with](#built-with)
 
 ## What it does
@@ -115,6 +116,10 @@ dotnet publish src/TetherMate/TetherMate.csproj -c Release -r win-x64 -p:Publish
 
 - The app targets Windows 10/11 and uses WPF for a native UI.
 - The `gnirehtet` CLI is invoked with the `-s <serial>` argument to target the selected device.
+
+## Third-party licenses
+
+- `gnirehtet` is licensed under the Apache License 2.0. See `licenses/gnirehtet-LICENSE.txt`.
 
 ## Built with
 
