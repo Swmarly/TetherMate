@@ -1,3 +1,29 @@
+
+<a id="readme-top"></a>
+<br />
+<div align="center">
+  <a href="https://github.com/Swmarly/TetherMate">
+    <img src="src/TetherMate/ico/TetherMateLogo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">TetherMate</h3>
+
+  <p align="center">
+    Automatically manages gnirehtet reverse tethering for Quest and other Android VR headsets over USB.
+    <br />
+    <a href="https://github.com/Swmarly/TetherMate"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/Swmarly/TetherMate">View Demo</a>
+    &middot;
+    <a href="https://github.com/Swmarly/TetherMate/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    &middot;
+    <a href="https://github.com/Swmarly/TetherMate/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p>
+</div>
+
+
+
 # TetherMate
 
 TetherMate lets you use a **wired** network connection over the USB cable on your VR headset. It creates a USB-based Wi‑Fi link so VR streaming apps like **Virtual Desktop** (normally wireless) can run over a stable, low-latency **wired** connection instead of regular Wi‑Fi. This is especially useful when you want the reliability of a cable while still using Wi‑Fi–based streaming features.
