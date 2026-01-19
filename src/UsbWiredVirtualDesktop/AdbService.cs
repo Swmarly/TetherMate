@@ -134,8 +134,8 @@ public sealed class AdbService
         using var process = new Process { StartInfo = psi };
         var output = new StringBuilder();
         var error = new StringBuilder();
-        var outputReady = new TaskCompletionSource<bool>();
-        var errorReady = new TaskCompletionSource<bool>();
+        var outputReady = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var errorReady = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
 
         process.OutputDataReceived += (_, args) =>
         {
@@ -161,7 +161,18 @@ public sealed class AdbService
             }
         };
 
-        process.Start();
+        try
+        {
+            if (!process.Start())
+            {
+                return new ProcessResult { ExitCode = -1 };
+            }
+        }
+        catch (Exception ex)
+        {
+            return new ProcessResult { ExitCode = -1, StandardError = ex.Message };
+        }
+
         process.BeginOutputReadLine();
         process.BeginErrorReadLine();
 
@@ -179,6 +190,11 @@ public sealed class AdbService
             catch (InvalidOperationException)
             {
             }
+        }
+        finally
+        {
+            outputReady.TrySetResult(true);
+            errorReady.TrySetResult(true);
         }
 
         await Task.WhenAll(outputReady.Task, errorReady.Task);

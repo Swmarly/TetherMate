@@ -56,7 +56,22 @@ public sealed class GnirehtetManager
             _log("gnirehtet exited.");
         };
 
-        _process.Start();
+        try
+        {
+            if (!_process.Start())
+            {
+                _log("gnirehtet failed to start.");
+                _process = null;
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            _log($"gnirehtet failed to start: {ex.Message}");
+            _process = null;
+            return;
+        }
+
         _process.BeginOutputReadLine();
         _process.BeginErrorReadLine();
         _log("gnirehtet starting...");
@@ -79,14 +94,17 @@ public sealed class GnirehtetManager
     {
         foreach (var process in Process.GetProcessesByName("gnirehtet"))
         {
-            try
+            using (process)
             {
-                process.Kill(true);
-                _log("Killed orphaned gnirehtet process.");
-            }
-            catch (Exception ex)
-            {
-                _log($"Failed to kill orphaned gnirehtet process: {ex.Message}");
+                try
+                {
+                    process.Kill(true);
+                    _log("Killed orphaned gnirehtet process.");
+                }
+                catch (Exception ex)
+                {
+                    _log($"Failed to kill orphaned gnirehtet process: {ex.Message}");
+                }
             }
         }
 
@@ -95,17 +113,25 @@ public sealed class GnirehtetManager
 
     private async Task StopProcessAsync()
     {
-        if (_process is { HasExited: false })
+        if (_process is { HasExited: false } runningProcess)
         {
             try
             {
-                _process.Kill(true);
+                runningProcess.Kill(true);
                 _log("gnirehtet process terminated.");
             }
             catch (Exception ex)
             {
                 _log($"Failed to terminate gnirehtet: {ex.Message}");
             }
+            finally
+            {
+                runningProcess.Dispose();
+            }
+        }
+        else
+        {
+            _process?.Dispose();
         }
 
         _process = null;
