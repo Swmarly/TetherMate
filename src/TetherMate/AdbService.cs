@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class AdbService
 {

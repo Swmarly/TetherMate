@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class DeviceInfo
 {

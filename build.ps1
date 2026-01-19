@@ -9,7 +9,7 @@ if (Test-Path $dist) {
 
 Write-Host "Publishing single-file EXE to $dist"
 
-& dotnet publish "$root\src\UsbWiredVirtualDesktop\UsbWiredVirtualDesktop.csproj" `
+& dotnet publish "$root\src\TetherMate\TetherMate.csproj" `
     -c Release `
     -r win-x64 `
     -p:PublishSingleFile=true `
@@ -17,4 +17,4 @@ Write-Host "Publishing single-file EXE to $dist"
     -p:IncludeAllContentForSelfExtract=true `
     -o $dist
 
-Write-Host "Done. Output: $dist\UsbWiredVirtualDesktop.exe"
+Write-Host "Done. Output: $dist\TetherMate.exe"

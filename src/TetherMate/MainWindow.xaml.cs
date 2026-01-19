@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public partial class MainWindow : Window
 {

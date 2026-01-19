@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class BinaryManager
 {
@@ -23,12 +23,12 @@ public sealed class BinaryManager
         Directory.CreateDirectory(_binDirectory);
         var resources = new Dictionary<string, string>
         {
-            ["UsbWiredVirtualDesktop.Resources.adb.exe"] = AdbPath,
-            ["UsbWiredVirtualDesktop.Resources.AdbWinApi.dll"] = Path.Combine(_binDirectory, "AdbWinApi.dll"),
-            ["UsbWiredVirtualDesktop.Resources.AdbWinUsbApi.dll"] = Path.Combine(_binDirectory, "AdbWinUsbApi.dll"),
-            ["UsbWiredVirtualDesktop.Resources.gnirehtet.exe"] = GnirehtetPath,
-            ["UsbWiredVirtualDesktop.Resources.gnirehtet.apk"] = Path.Combine(_binDirectory, "gnirehtet.apk"),
-            ["UsbWiredVirtualDesktop.Resources.libwinpthread-1.dll"] = Path.Combine(_binDirectory, "libwinpthread-1.dll"),
+            ["TetherMate.Resources.adb.exe"] = AdbPath,
+            ["TetherMate.Resources.AdbWinApi.dll"] = Path.Combine(_binDirectory, "AdbWinApi.dll"),
+            ["TetherMate.Resources.AdbWinUsbApi.dll"] = Path.Combine(_binDirectory, "AdbWinUsbApi.dll"),
+            ["TetherMate.Resources.gnirehtet.exe"] = GnirehtetPath,
+            ["TetherMate.Resources.gnirehtet.apk"] = Path.Combine(_binDirectory, "gnirehtet.apk"),
+            ["TetherMate.Resources.libwinpthread-1.dll"] = Path.Combine(_binDirectory, "libwinpthread-1.dll"),
         };
 
         foreach (var (resourceName, outputPath) in resources)
