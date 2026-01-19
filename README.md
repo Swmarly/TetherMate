@@ -21,6 +21,16 @@ A Windows 10/11 desktop application that automatically manages `adb` + `gnirehte
 3. Use the **Target device** dropdown to select the device to manage.
 4. Manual **Start / Stop / Restart** controls are provided for overrides.
 
+## Required headset settings (ADB debugging)
+
+The headset must have **Developer Mode** enabled and **USB/ADB debugging** turned on, or the app will never see it as ready.
+
+### Meta Quest 2/3 (and similar)
+
+1. Enable **Developer Mode** for the headset in the Meta Quest mobile app (Device settings → Developer Mode).
+2. On the headset, open **Settings → System → Developer** and toggle **USB debugging** on.
+3. Connect the headset via USB and accept the **Allow USB debugging** prompt inside the headset.
+
 ## Troubleshooting
 
 - **Unauthorized**: Put on the headset/device and accept the USB debugging prompt.
