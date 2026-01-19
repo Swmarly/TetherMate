@@ -45,7 +45,7 @@ The headset must have **Developer Mode** enabled and **USB/ADB debugging** turne
 
 ### Prerequisites
 - Windows 10/11
-- .NET 6 SDK (build-time only)
+- .NET 8 SDK (build-time only)
 
 ### One-command build
 
