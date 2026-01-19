@@ -15,6 +15,7 @@
       <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
       <Setter Property="BorderThickness" Value="1" />
       <Setter Property="CornerRadius" Value="14" />
+      <Setter Property="Effect" Value="{StaticResource CardShadowEffect}" />
       <Setter Property="Padding" Value="16" />
     </Style>
   </Window.Resources>
@@ -41,7 +42,7 @@
           <Border Background="{StaticResource AccentBrush}" CornerRadius="12" Padding="10,4" Margin="0,0,12,0">
             <TextBlock Text="Connected" Foreground="White" FontSize="12" FontWeight="SemiBold" />
           </Border>
-          <Border Background="{StaticResource MutedBrush}" CornerRadius="12" Padding="10,4">
+          <Border Background="{StaticResource HighlightBrush}" CornerRadius="12" Padding="10,4">
             <TextBlock Text="USB Ready" Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontWeight="SemiBold" />
           </Border>
         </StackPanel>
