@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\adb.exe" Link="Resources\adb.exe" />
+    <EmbeddedResource Include="..\..\AdbWinApi.dll" Link="Resources\AdbWinApi.dll" />
+    <EmbeddedResource Include="..\..\AdbWinUsbApi.dll" Link="Resources\AdbWinUsbApi.dll" />
+    <EmbeddedResource Include="..\..\gnirehtet.exe" Link="Resources\gnirehtet.exe" />
+    <EmbeddedResource Include="..\..\gnirehtet.apk" Link="Resources\gnirehtet.apk" />
+    <EmbeddedResource Include="..\..\libwinpthread-1.dll" Link="Resources\libwinpthread-1.dll" />
+  </ItemGroup>
+</Project>
