@@ -287,6 +287,27 @@
       <Setter Property="RowHeight" Value="38" />
       <Setter Property="ColumnHeaderHeight" Value="40" />
       <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+      <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderBrush}" />
+      <Setter Property="VerticalGridLinesBrush" Value="{StaticResource BorderBrush}" />
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+      <Setter Property="Background" Value="{StaticResource SurfaceElevatedBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+      <Setter Property="Padding" Value="10,0" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="DataGridCell">
+      <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
+      <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="0,0,0,1" />
+      <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style TargetType="ListBox">
