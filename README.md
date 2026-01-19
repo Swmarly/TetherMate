@@ -117,9 +117,14 @@ dotnet publish src/TetherMate/TetherMate.csproj -c Release -r win-x64 -p:Publish
 - The app targets Windows 10/11 and uses WPF for a native UI.
 - The `gnirehtet` CLI is invoked with the `-s <serial>` argument to target the selected device.
 
+## License
+
+This project is licensed under the Apache License 2.0. See `LICENSE`.
+
 ## Third-party licenses
 
 - `gnirehtet` is licensed under the Apache License 2.0. See `licenses/gnirehtet-LICENSE.txt`.
+- Android platform tools (`adb.exe`, `AdbWinApi.dll`, `AdbWinUsbApi.dll`) ship with third-party licenses. See `NOTICE.txt`, which includes Apache-2.0, MIT, BSD, ISC, OpenSSL/SSLeay, GPLv2, LGPLv2.1, and other license texts.
 
 ## Built with
 
