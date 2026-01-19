@@ -6,7 +6,7 @@
     <img src="src/TetherMate/ico/TetherMateLogo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">TetherMate</h3>
+  <h3 align="center">TetherMate (WIP)</h3>
 
   <p align="center">
     Automatically manages gnirehtet reverse tethering for Quest and other Android VR headsets over USB.
