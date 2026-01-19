@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class MainViewModel : INotifyPropertyChanged
 {
@@ -87,7 +87,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public async Task InitializeAsync()
     {
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var binDir = Path.Combine(appData, "UsbWiredVirtualDesktop", "bin");
+        var binDir = Path.Combine(appData, "TetherMate", "bin");
         _binaryManager = new BinaryManager(binDir);
         await _binaryManager.EnsureExtractedAsync(AppendLog);
 

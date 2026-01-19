@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class GnirehtetManager
 {

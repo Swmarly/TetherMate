@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace UsbWiredVirtualDesktop;
+namespace TetherMate;
 
 public sealed class RelayCommand : ICommand
 {

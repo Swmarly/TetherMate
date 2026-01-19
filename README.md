@@ -5,7 +5,7 @@ A Windows 10/11 desktop application that automatically manages `adb` + `gnirehte
 ## How it works
 
 - The app bundles the `adb` and `gnirehtet` binaries already in this repository.
-- On startup it extracts the binaries into `%LOCALAPPDATA%\UsbWiredVirtualDesktop\bin`.
+- On startup it extracts the binaries into `%LOCALAPPDATA%\TetherMate\bin`.
 - A background monitor refreshes the device list via `adb devices -l` and probes ready devices using `adb shell getprop`.
 - A device is considered **ready** when:
   - ADB reports it in `device` state, **and**
@@ -56,13 +56,13 @@ The headset must have **Developer Mode** enabled and **USB/ADB debugging** turne
 This produces a single, self-contained EXE at:
 
 ```
-./dist/UsbWiredVirtualDesktop.exe
+./dist/TetherMate.exe
 ```
 
 ### Manual build command
 
 ```powershell
-dotnet publish src/UsbWiredVirtualDesktop/UsbWiredVirtualDesktop.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeAllContentForSelfExtract=true -o dist
+dotnet publish src/TetherMate/TetherMate.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeAllContentForSelfExtract=true -o dist
 ```
 
 ## Notes on compatibility
