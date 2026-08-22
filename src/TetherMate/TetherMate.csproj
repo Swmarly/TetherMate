@@ -1,20 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);WPF0001</NoWarn>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>ico\TetherMateLogo.ico</ApplicationIcon>
+    <AssemblyName>TetherMate</AssemblyName>
+    <RootNamespace>TetherMate</RootNamespace>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <Company>Swmarly</Company>
+    <Product>TetherMate</Product>
+    <Description>Wired Virtual Desktop networking for Meta Quest over USB.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\adb.exe" Link="Resources\adb.exe" />
-    <EmbeddedResource Include="..\..\AdbWinApi.dll" Link="Resources\AdbWinApi.dll" />
-    <EmbeddedResource Include="..\..\AdbWinUsbApi.dll" Link="Resources\AdbWinUsbApi.dll" />
-    <EmbeddedResource Include="..\..\gnirehtet.exe" Link="Resources\gnirehtet.exe" />
-    <EmbeddedResource Include="..\..\gnirehtet.apk" Link="Resources\gnirehtet.apk" />
-    <EmbeddedResource Include="..\..\libwinpthread-1.dll" Link="Resources\libwinpthread-1.dll" />
+    <ProjectReference Include="..\TetherMate.Core\TetherMate.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="ico\TetherMateLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\adb.exe" LogicalName="TetherMate.Resources.adb.exe" />
+    <EmbeddedResource Include="..\..\AdbWinApi.dll" LogicalName="TetherMate.Resources.AdbWinApi.dll" />
+    <EmbeddedResource Include="..\..\AdbWinUsbApi.dll" LogicalName="TetherMate.Resources.AdbWinUsbApi.dll" />
+    <EmbeddedResource Include="..\..\gnirehtet.exe" LogicalName="TetherMate.Resources.gnirehtet.exe" />
+    <EmbeddedResource Include="..\..\gnirehtet.apk" LogicalName="TetherMate.Resources.gnirehtet.apk" />
+    <EmbeddedResource Include="..\..\libwinpthread-1.dll" LogicalName="TetherMate.Resources.libwinpthread-1.dll" />
+    <EmbeddedResource Include="..\..\LICENSE" LogicalName="TetherMate.Resources.LICENSE.txt" />
+    <EmbeddedResource Include="..\..\NOTICE.txt" LogicalName="TetherMate.Resources.NOTICE.txt" />
+    <EmbeddedResource Include="..\..\licenses\gnirehtet-LICENSE.txt" LogicalName="TetherMate.Resources.gnirehtet-LICENSE.txt" />
   </ItemGroup>
 </Project>

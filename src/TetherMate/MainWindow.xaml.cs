@@ -1,53 +1,54 @@
-using System;
-using System.Runtime.InteropServices;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Interop;
+using System.Windows.Input;
+using TetherMate.Presentation;
 
 namespace TetherMate;
 
 public partial class MainWindow : Window
 {
-    private readonly MainViewModel _viewModel = new();
+    private readonly MainViewModel _viewModel;
 
-    public MainWindow()
+    public MainWindow(MainViewModel viewModel)
     {
+        _viewModel = viewModel;
         InitializeComponent();
-        DataContext = _viewModel;
+        DataContext = viewModel;
         Loaded += OnLoaded;
-        Closing += (_, _) => _viewModel.RequestShutdown();
+        Closing += OnClosing;
+        PreviewKeyDown += OnPreviewKeyDown;
     }
 
-    private async void OnLoaded(object sender, RoutedEventArgs e)
+    public void ShowAndActivate()
     {
-        ApplyDarkTitleBar();
+        Show();
+        if (WindowState == WindowState.Minimized)
+        {
+            WindowState = WindowState.Normal;
+        }
+
+        Activate();
+        Topmost = true;
+        Topmost = false;
+        Focus();
+    }
+
+    private async void OnLoaded(object sender, RoutedEventArgs eventArgs)
+    {
         await _viewModel.InitializeAsync();
     }
 
-    private void ApplyDarkTitleBar()
+    private void OnClosing(object? sender, CancelEventArgs eventArgs)
     {
-        if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 17763))
-        {
-            return;
-        }
-
-        var hwnd = new WindowInteropHelper(this).Handle;
-        if (hwnd == IntPtr.Zero)
-        {
-            return;
-        }
-
-        const int dwmwaUseImmersiveDarkMode = 20;
-        const int dwmwaUseImmersiveDarkModeBefore20H1 = 19;
-
-        var useImmersiveDarkMode = 1;
-        _ = DwmSetWindowAttribute(hwnd, dwmwaUseImmersiveDarkMode, ref useImmersiveDarkMode, Marshal.SizeOf<int>());
-        _ = DwmSetWindowAttribute(hwnd, dwmwaUseImmersiveDarkModeBefore20H1, ref useImmersiveDarkMode, Marshal.SizeOf<int>());
+        App.Current.HandleWindowClosing(eventArgs);
     }
 
-    [DllImport("dwmapi.dll", PreserveSig = true)]
-    private static extern int DwmSetWindowAttribute(
-        IntPtr hwnd,
-        int attribute,
-        ref int pvAttribute,
-        int cbAttribute);
+    private void OnPreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs eventArgs)
+    {
+        if (eventArgs.Key == Key.Escape && _viewModel.CloseToTray)
+        {
+            Hide();
+            eventArgs.Handled = true;
+        }
+    }
 }
