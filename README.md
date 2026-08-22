@@ -1,133 +1,156 @@
-
-<a id="readme-top"></a>
-<br />
 <div align="center">
-  <a href="https://github.com/Swmarly/TetherMate">
-    <img src="src/TetherMate/ico/TetherMateLogo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">TetherMate (WIP)</h3>
-
-  <p align="center">
-    Automatically manages gnirehtet reverse tethering for Quest and other Android VR headsets over USB.
-    <br />
-    <a href="https://github.com/Swmarly/TetherMate"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/Swmarly/TetherMate/releases">Download</a>
-    &middot;
-    <a href="https://github.com/Swmarly/TetherMate/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/Swmarly/TetherMate/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  <img src="src/TetherMate/ico/TetherMateLogo.png" alt="TetherMate logo" width="92">
+  <h1>TetherMate</h1>
+  <p><strong>Use Virtual Desktop on Meta Quest through a USB cable.</strong></p>
+  <p>
+    <a href="https://github.com/Swmarly/TetherMate/releases/latest">Download for Windows</a>
+    ·
+    <a href="https://github.com/Swmarly/TetherMate/actions/workflows/build.yml">Build status</a>
+    ·
+    <a href="https://github.com/Swmarly/TetherMate/issues/new">Report a problem</a>
   </p>
 </div>
 
+TetherMate is a Windows 10/11 app that gives an Android-based VR headset a network path through its USB data cable. It is aimed at Meta Quest and Virtual Desktop, and uses `adb` plus [gnirehtet](https://github.com/Genymobile/gnirehtet) without requiring root, a special Windows network driver, or administrator access.
 
+TetherMate provides the wired network path. You still need Virtual Desktop on the headset and Virtual Desktop Streamer on the PC. It is independent of Meta Quest Link and does not replace Virtual Desktop.
 
-# TetherMate
+## Why this rebuild works
 
-TetherMate is a Windows 10/11 desktop app that automatically manages `adb` + `gnirehtet` reverse tethering for compatible Android-based VR headsets (Meta Quest 2 and similar). It lets you use a **wired** network connection over USB while still supporting Wi‑Fi–based streaming apps like **Virtual Desktop**.
+The former implementation launched gnirehtet with invalid `-s <serial>` syntax and did not tell gnirehtet where the bundled `adb.exe` was located. It then displayed **Running** before checking whether a tunnel or headset client existed.
 
-## Table of contents
+The rebuilt app uses a verified startup sequence:
 
-- [What it does](#what-it-does)
-- [How it works](#how-it-works)
-- [Requirements](#requirements)
-- [Usage](#usage)
-  - [Select a target device](#select-a-target-device)
-  - [Enable ADB debugging](#enable-adb-debugging)
-  - [Troubleshooting](#troubleshooting)
-- [Build & package (single-file EXE)](#build--package-single-file-exe)
-- [Compatibility notes](#compatibility-notes)
-- [Third-party licenses](#third-party-licenses)
-- [Built with](#built-with)
+1. Start the PC relay and confirm that it stays alive.
+2. Invoke `gnirehtet start <serial>` with the correct positional serial.
+3. Pass absolute `ADB` and `GNIREHTET_APK` paths to gnirehtet.
+4. Verify the `adb reverse` mapping on TCP 31416.
+5. Wait for the headset VPN client to actually connect before showing **Connected**.
 
-## What it does
+It also reconnects after cable interruptions, backs off after failures, preserves manual disconnects, keeps useful local logs, and never kills another program’s ADB server or unrelated gnirehtet process.
 
-TetherMate provides a stable, low-latency wired alternative for VR streaming by managing reverse tethering over USB. It watches connected ADB devices, selects a target device, and keeps `gnirehtet` running only when the device is ready.
+## Setup
 
-## How it works
+You need:
 
-- The app bundles the `adb` and `gnirehtet` binaries already in this repository.
-- On startup it extracts the binaries into `%LOCALAPPDATA%\TetherMate\bin`.
-- A background monitor refreshes the device list via `adb devices -l` and probes ready devices using `adb shell getprop`.
-- A device is considered **ready** when:
-  - ADB reports it in `device` state, **and**
-  - It responds to `adb shell getprop` probes.
-- `gnirehtet` auto-starts when the selected device becomes ready and stays ready for a few seconds (debounce).
-- `gnirehtet` auto-stops when the selected device is disconnected, unauthorized, offline, or otherwise not ready.
-- If you change the selected target device, the app stops the current session and starts a new one if the new device is ready.
+- Windows 10 or 11, x64
+- Meta Quest 2, Quest 3, Quest 3S, or another compatible Android headset
+- Developer Mode and USB debugging enabled on the headset
+- A USB data cable; USB 3 is strongly recommended for VR streaming
+- Virtual Desktop on the headset and Virtual Desktop Streamer on the PC
 
-## Requirements
+### First connection
+
+1. Download the latest `TetherMate-…-win-x64.zip` from [Releases](https://github.com/Swmarly/TetherMate/releases/latest).
+2. Extract the ZIP and run `TetherMate.exe`.
+3. Connect and wake the headset.
+4. Put on the headset and accept **Allow USB debugging**. Choose **Always allow from this computer** when available.
+5. Accept Android’s VPN connection prompt when TetherMate starts the link.
+6. Wait for TetherMate to show **Connected over USB**, then open Virtual Desktop.
+
+To prove that Virtual Desktop is using the cable, temporarily turn off Wi‑Fi on the headset after TetherMate turns green. The PC must retain its normal network connection.
+
+## What the status means
+
+| Status | Meaning | Action |
+|---|---|---|
+| Connect your headset | ADB sees no device | Check the cable, USB port, headset power, and Developer Mode |
+| Allow USB debugging | The device is present but unauthorized | Accept the prompt inside the headset |
+| Finish setup in the headset | The PC relay and USB tunnel are ready | Accept the VPN prompt inside the headset |
+| Connected over USB | The headset client reached the PC relay | Open Virtual Desktop |
+| Needs attention | A command, relay, or tunnel failed | Run **Diagnostics**, then **Restart link** |
+
+TetherMate continues running in the notification area by default. Right-click its tray icon to connect, disconnect, diagnose, or exit.
+
+If the bundled headset helper is missing, damaged, or conflicts with an older installation, open **Diagnostics** and select **Repair headset client**. TetherMate will uninstall it, install the bundled copy, and rebuild the link.
+
+## Troubleshooting
+
+### No headset appears
+
+- Confirm that the cable supports data; some USB-C cables only charge.
+- Connect directly to a USB 3 port instead of a hub.
+- Disable and re-enable Developer Mode if Meta’s USB debugging prompt has disappeared.
+- Wake and unlock the headset before reconnecting the cable.
+
+### It waits for the headset VPN
+
+Put on the headset and look for Android’s VPN permission dialog. If no dialog appears, select **Restart link**. TetherMate only reports Connected after gnirehtet logs a real client connection.
+
+### Virtual Desktop cannot find the PC
+
+- Start Virtual Desktop Streamer on Windows first.
+- Restart Virtual Desktop on the headset after the wired link turns green.
+- Confirm that the PC itself still has internet/network access.
+
+This is an IPv4 VPN-over-ADB path, not a true Ethernet bridge. Virtual Desktop may describe the PC as being on a different network or enforce its own bitrate behavior; TetherMate cannot override Virtual Desktop’s limits.
+
+### Windows SmartScreen appears
+
+The executable is built publicly by GitHub Actions but is not currently code-signed with a commercial certificate. Windows may therefore show an unknown-publisher warning. Every release includes `SHA256SUMS.txt` so the downloaded ZIP can be verified.
+
+## Privacy
+
+TetherMate has no telemetry and uploads nothing. Local lifecycle and command logs are stored under:
+
+```text
+%LOCALAPPDATA%\TetherMate\logs
+```
+
+Logs rotate automatically and may include the connected device serial. They leave the PC only if you copy or share them yourself.
+
+## Build from source
+
+Requirements:
 
 - Windows 10/11
-- .NET 8 SDK (build-time only)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- PowerShell 5.1 or newer
 
-## Usage
-
-### Select a target device
-
-1. Connect your headset/device via USB and accept the ADB authorization prompt inside the headset.
-2. The device will appear in the **Connected ADB devices** list.
-3. Use the **Target device** dropdown to select the device to manage.
-4. Manual **Start / Stop / Restart** controls are provided for overrides.
-
-### Enable ADB debugging
-
-The headset must have **Developer Mode** enabled and **USB/ADB debugging** turned on, or the app will never see it as ready.
-
-#### Meta Quest 2/3 (and similar)
-
-1. Enable **Developer Mode** for the headset in the Meta Quest mobile app (Device settings → Developer Mode).
-2. On the headset, open **Settings → System → Developer** and toggle **USB debugging** on.
-3. Connect the headset via USB and accept the **Allow USB debugging** prompt inside the headset.
-
-### Troubleshooting
-
-- **Unauthorized**: Put on the headset/device and accept the USB debugging prompt.
-- **Offline**: Replug the USB cable or toggle USB debugging in the headset settings.
-- **No devices listed**:
-  - Ensure USB debugging is enabled.
-  - Try a different USB cable/port.
-  - Verify that the headset is powered on and awake.
-- **gnirehtet errors**: Check the log panel for the exact error output.
-
-## Build & package (single-file EXE)
-
-### One-command build
+Run either command from the repository root:
 
 ```powershell
 ./build.ps1
 ```
 
-This produces a single, self-contained EXE at:
-
-```
-./dist/TetherMate.exe
+```bat
+build.bat
 ```
 
-### Manual build command
+The script restores dependencies, builds with warnings treated as errors, runs the dependency-free core test suite, creates a compressed self-contained EXE, packages the license files, and writes:
 
-```powershell
-dotnet publish src/TetherMate/TetherMate.csproj -c Release -r win-x64 -p:PublishSingleFile=true -p:SelfContained=true -p:IncludeAllContentForSelfExtract=true -o dist
+```text
+dist/TetherMate.exe
+dist/TetherMate-1.0.0-win-x64.zip
+dist/SHA256SUMS.txt
 ```
 
-## Compatibility notes
+## Publish a GitHub release
 
-- The app targets Windows 10/11 and uses WPF for a native UI.
-- The `gnirehtet` CLI is invoked with the `-s <serial>` argument to target the selected device.
+There are two supported paths:
 
-## License
+1. In GitHub, open **Actions → Release → Run workflow**, enter a version such as `1.0.0`, and run it.
+2. From a clean local checkout, run:
 
-This project is licensed under the Apache License 2.0. See <a href="https://github.com/Swmarly/TetherMate?tab=Apache-2.0-1-ov-file">LICENSE</a>.
+   ```powershell
+   ./release.ps1 -Version 1.0.0
+   ```
 
-## Third-party licenses
+The local script builds and tests first, then pushes `v1.0.0`. The release workflow builds on a clean `windows-latest` runner and publishes the EXE, ZIP, checksums, and generated release notes.
 
-- `gnirehtet` is licensed under the Apache License 2.0. See `licenses/gnirehtet-LICENSE.txt`.
-- Android platform tools (`adb.exe`, `AdbWinApi.dll`, `AdbWinUsbApi.dll`) ship with third-party licenses. See `NOTICE.txt`, which includes Apache-2.0, MIT, BSD, ISC, OpenSSL/SSLeay, GPLv2, LGPLv2.1, and other license texts.
+## Architecture
 
-## Built with
+- `TetherMate.Core` contains the ADB parser, safe process runner, verified gnirehtet session, and relay-state detection.
+- `TetherMate` is the WPF desktop/tray app and uses .NET 10’s Fluent theme foundation.
+- `TetherMate.Core.Tests` is a package-free executable test harness, so contributors do not depend on a third-party test framework.
+- Bundled runtime files are SHA-256 checked and atomically refreshed under `%LOCALAPPDATA%\TetherMate\runtime`.
 
-- C# / .NET 8
-- WPF (Windows Presentation Foundation)
-- `adb` + `gnirehtet`
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the connection lifecycle and design decisions.
+
+## License and third-party software
+
+TetherMate is licensed under the [Apache License 2.0](LICENSE).
+
+- gnirehtet is Apache-2.0 licensed; see [`licenses/gnirehtet-LICENSE.txt`](licenses/gnirehtet-LICENSE.txt).
+- Android platform-tools notices are distributed in [`NOTICE.txt`](NOTICE.txt).
+- The release ZIP contains all applicable license and notice files, and the app extracts a local copy accessible from **Third-party notices**.

@@ -5,130 +5,342 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="TetherMate"
-        Background="{StaticResource AppBackgroundBrush}"
-        Height="720"
-        Width="1080"
-        MinHeight="640"
-        MinWidth="980">
-  <Window.Resources>
-    <Style x:Key="CardStyle" TargetType="Border">
-      <Setter Property="Background" Value="{StaticResource SurfaceBrush}" />
-      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
-      <Setter Property="BorderThickness" Value="1" />
-      <Setter Property="CornerRadius" Value="14" />
-      <Setter Property="Effect" Value="{StaticResource CardShadowEffect}" />
-      <Setter Property="Padding" Value="16" />
-    </Style>
-  </Window.Resources>
-
-  <Grid Margin="24" Background="{StaticResource AppBackgroundBrush}">
+        Icon="ico/TetherMateLogo.png"
+        Width="920"
+        Height="760"
+        MinWidth="820"
+        MinHeight="660"
+        WindowStartupLocation="CenterScreen">
+  <Grid Background="{StaticResource AppBackgroundBrush}">
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
+      <RowDefinition Height="72" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="280" />
     </Grid.RowDefinitions>
 
-    <Border Style="{StaticResource CardStyle}" Grid.Row="0" Margin="0,0,0,20">
-      <Grid>
+    <Border Grid.Row="0"
+            Background="{StaticResource HeaderBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,0,0,1">
+      <Grid Margin="26,0">
         <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="*" />
           <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <StackPanel>
-          <TextBlock Text="TetherMate" FontSize="28" FontWeight="SemiBold" />
-          <TextBlock Text="Automatic gnirehtet manager" Foreground="{StaticResource TextSecondaryBrush}" FontSize="14" Margin="0,6,0,0" />
+        <Image Width="38" Height="38" Source="ico/TetherMateLogo.png" VerticalAlignment="Center" />
+        <StackPanel Grid.Column="1" Margin="13,0,0,0" VerticalAlignment="Center">
+          <TextBlock Text="TetherMate" FontSize="20" FontWeight="SemiBold" />
+          <TextBlock Text="Virtual Desktop over USB" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
         </StackPanel>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-          <Border Background="{StaticResource AccentBrush}" CornerRadius="12" Padding="10,4" Margin="0,0,12,0">
-            <TextBlock Text="{Binding AdbStatus}" Foreground="White" FontSize="12" FontWeight="SemiBold" />
-          </Border>
-          <Border Background="{StaticResource HighlightBrush}" CornerRadius="12" Padding="10,4">
-            <TextBlock Text="{Binding DeviceStatus}" Foreground="{StaticResource TextPrimaryBrush}" FontSize="12" FontWeight="SemiBold" />
-          </Border>
-        </StackPanel>
+        <Border Grid.Column="2"
+                Style="{StaticResource ToneBadgeStyle}"
+                Tag="{Binding StatusTone}"
+                VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal">
+            <Ellipse Style="{StaticResource ToneDotStyle}"
+                     Tag="{Binding StatusTone}"
+                     Margin="0,0,7,0" />
+            <TextBlock Text="{Binding StatusTitle}" FontSize="12" FontWeight="SemiBold" />
+          </StackPanel>
+        </Border>
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1" Margin="0,0,0,20">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="2*" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
+    <ScrollViewer Grid.Row="1"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+      <Grid Margin="26">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="5*" />
+          <ColumnDefinition Width="18" />
+          <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
 
-      <Border Style="{StaticResource CardStyle}" Grid.Column="0" Margin="0,0,16,0">
-        <StackPanel>
-          <TextBlock Text="Target device" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
-          <ComboBox ItemsSource="{Binding Devices}"
-                    SelectedItem="{Binding SelectedDevice}"
-                    DisplayMemberPath="DisplayName"
-                    Margin="0,10,0,0" />
+        <StackPanel Grid.Column="0">
+          <Border Style="{StaticResource HeroCardStyle}"
+                  Tag="{Binding StatusTone}"
+                  Padding="26">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <Border Width="46"
+                        Height="46"
+                        CornerRadius="23"
+                        Background="{StaticResource AccentSoftBrush}"
+                        VerticalAlignment="Top">
+                  <Path Data="M 5 3 L 15 3 L 15 11 L 19 11 L 19 21 L 1 21 L 1 11 L 5 11 Z M 7 6 L 7 10 M 13 6 L 13 10 M 5 15 C 8 12, 12 12, 15 15 M 7 17 C 9 15, 11 15, 13 17"
+                        Stroke="{StaticResource AccentBrush}"
+                        StrokeThickness="1.5"
+                        StrokeStartLineCap="Round"
+                        StrokeEndLineCap="Round"
+                        Stretch="Uniform"
+                        Width="24"
+                        Height="24"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Margin="16,0,0,0">
+                  <TextBlock Text="{Binding StatusTitle}"
+                             FontSize="28"
+                             FontWeight="SemiBold"
+                             LineHeight="34" />
+                  <TextBlock Text="{Binding StatusDetail}"
+                             Margin="0,7,0,0"
+                             FontSize="14"
+                             LineHeight="21"
+                             Foreground="{StaticResource TextSecondaryBrush}"
+                             TextWrapping="Wrap"
+                             MaxWidth="520" />
+                </StackPanel>
+              </StackPanel>
+
+              <Border Margin="0,24,0,0"
+                      Padding="14"
+                      Background="{StaticResource SurfaceElevatedBrush}"
+                      CornerRadius="11">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <StackPanel>
+                    <TextBlock Text="{Binding SelectedDeviceName}" FontSize="14" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding SelectedDeviceSerial}"
+                               Margin="0,3,0,0"
+                               FontSize="11"
+                               Foreground="{StaticResource TextMutedBrush}"
+                               TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                  <TextBlock Grid.Column="1"
+                             Text="{Binding DeviceCountLabel}"
+                             VerticalAlignment="Center"
+                             FontSize="11"
+                             Foreground="{StaticResource TextSecondaryBrush}" />
+                </Grid>
+              </Border>
+
+              <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        Content="{Binding ConnectionActionText}"
+                        Command="{Binding ToggleConnectionCommand}"
+                        Style="{StaticResource PrimaryButtonStyle}" />
+                <Button Grid.Column="1"
+                        Content="Restart link"
+                        Command="{Binding RestartCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="10,0,0,0" />
+                <Button Grid.Column="2"
+                        Content="Refresh"
+                        Command="{Binding RefreshCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Margin="10,0,0,0" />
+              </Grid>
+            </StackPanel>
+          </Border>
+
+          <Border Style="{StaticResource CardStyle}" Margin="0,18,0,0">
+            <StackPanel>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Activity" FontSize="16" FontWeight="SemiBold" />
+                <Button Grid.Column="1"
+                        Content="Clear"
+                        Command="{Binding ClearActivityCommand}"
+                        Style="{StaticResource LinkButtonStyle}" />
+              </Grid>
+              <Border Margin="0,14,0,0"
+                      Background="{StaticResource AppBackgroundBrush}"
+                      CornerRadius="10"
+                      Padding="10">
+                <ListBox ItemsSource="{Binding Activity}"
+                         Height="180"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                  <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                      <Setter Property="Padding" Value="4,5" />
+                      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                      <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    </Style>
+                  </ListBox.ItemContainerStyle>
+                  <ListBox.ItemTemplate>
+                    <DataTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="58" />
+                          <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Time}"
+                                   FontFamily="Cascadia Mono, Consolas"
+                                   FontSize="11"
+                                   Foreground="{StaticResource TextMutedBrush}" />
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding Message}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap" />
+                      </Grid>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </Border>
+            </StackPanel>
+          </Border>
         </StackPanel>
-      </Border>
 
-      <Border Style="{StaticResource CardStyle}" Grid.Column="1" Margin="0,0,16,0">
-        <StackPanel>
-          <TextBlock Text="ADB" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
-          <TextBlock Text="{Binding AdbStatus}" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,0" />
+        <StackPanel Grid.Column="2">
+          <Border Style="{StaticResource CardStyle}">
+            <StackPanel>
+              <TextBlock Text="Connection path" FontSize="16" FontWeight="SemiBold" />
+              <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="22" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Ellipse Style="{StaticResource ToneDotStyle}"
+                         Tag="{Binding AdbStepTone}"
+                         VerticalAlignment="Top"
+                         Margin="0,5,0,0" />
+                <StackPanel Grid.Column="1">
+                  <TextBlock Text="Android bridge" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding AdbStepDetail}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                </StackPanel>
+              </Grid>
+              <Border Height="22" Width="1" Background="{StaticResource BorderBrush}" Margin="5,2,0,2" HorizontalAlignment="Left" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="22" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Ellipse Style="{StaticResource ToneDotStyle}"
+                         Tag="{Binding DeviceStepTone}"
+                         VerticalAlignment="Top"
+                         Margin="0,5,0,0" />
+                <StackPanel Grid.Column="1">
+                  <TextBlock Text="USB headset" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding DeviceStepDetail}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                </StackPanel>
+              </Grid>
+              <Border Height="22" Width="1" Background="{StaticResource BorderBrush}" Margin="5,2,0,2" HorizontalAlignment="Left" />
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="22" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Ellipse Style="{StaticResource ToneDotStyle}"
+                         Tag="{Binding TunnelStepTone}"
+                         VerticalAlignment="Top"
+                         Margin="0,5,0,0" />
+                <StackPanel Grid.Column="1">
+                  <TextBlock Text="Headset VPN" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding TunnelStepDetail}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" />
+                </StackPanel>
+              </Grid>
+            </StackPanel>
+          </Border>
+
+          <Border Style="{StaticResource CardStyle}" Margin="0,18,0,0">
+            <StackPanel>
+              <TextBlock Text="Headset" FontSize="16" FontWeight="SemiBold" />
+              <TextBlock Text="Target device" Margin="0,15,0,6" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" />
+              <ComboBox ItemsSource="{Binding Devices}"
+                        SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                        DisplayMemberPath="DisplayName" />
+              <TextBlock Text="{Binding AdbVersion}"
+                         Margin="0,10,0,0"
+                         FontSize="10"
+                         Foreground="{StaticResource TextMutedBrush}"
+                         TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+          </Border>
+
+          <Border Style="{StaticResource CardStyle}" Margin="0,18,0,0">
+            <StackPanel>
+              <TextBlock Text="Behavior" FontSize="16" FontWeight="SemiBold" />
+              <CheckBox Content="Connect automatically when ready"
+                        IsChecked="{Binding AutoConnect}"
+                        Style="{StaticResource SwitchStyle}"
+                        Margin="0,16,0,0" />
+              <CheckBox Content="Keep running in the tray"
+                        IsChecked="{Binding CloseToTray}"
+                        Style="{StaticResource SwitchStyle}"
+                        Margin="0,14,0,0" />
+            </StackPanel>
+          </Border>
+
+          <Border Style="{StaticResource CardStyle}" Margin="0,18,0,0">
+            <StackPanel>
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Diagnostics" FontSize="16" FontWeight="SemiBold" />
+                <Button Grid.Column="1"
+                        Content="Run checks"
+                        Command="{Binding DiagnoseCommand}"
+                        Style="{StaticResource LinkButtonStyle}" />
+              </Grid>
+              <StackPanel Visibility="{Binding IsDiagnosticsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                          Margin="0,12,0,0">
+                <TextBlock Text="{Binding DiagnosticsSummary}"
+                           FontSize="11"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           Margin="0,0,0,8" />
+                <ItemsControl ItemsSource="{Binding Diagnostics}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="18" />
+                          <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Style="{StaticResource ToneDotStyle}"
+                                 Tag="{Binding Tone}"
+                                 Width="8"
+                                 Height="8"
+                                 Margin="0,4,0,0"
+                                 VerticalAlignment="Top" />
+                        <StackPanel Grid.Column="1">
+                          <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="SemiBold" />
+                          <TextBlock Text="{Binding Detail}"
+                                     FontSize="10"
+                                     Foreground="{StaticResource TextSecondaryBrush}"
+                                     TextWrapping="Wrap" />
+                        </StackPanel>
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button Content="Copy results"
+                        Command="{Binding CopyDiagnosticsCommand}"
+                        Style="{StaticResource LinkButtonStyle}"
+                        Margin="0,7,0,0" />
+              </StackPanel>
+              <Separator Margin="0,12" Background="{StaticResource BorderBrush}" />
+              <Button Content="Repair headset client"
+                      Command="{Binding RepairClientCommand}"
+                      ToolTip="Reinstall the bundled VPN helper and rebuild the USB link"
+                      Style="{StaticResource LinkButtonStyle}" />
+              <Button Content="Setup guide" Command="{Binding OpenSetupGuideCommand}" Style="{StaticResource LinkButtonStyle}" />
+              <Button Content="Open local logs" Command="{Binding OpenLogsCommand}" Style="{StaticResource LinkButtonStyle}" />
+              <Button Content="Third-party notices" Command="{Binding OpenNoticesCommand}" Style="{StaticResource LinkButtonStyle}" />
+              <TextBlock Text="{Binding AppVersion, StringFormat=TetherMate {0}}"
+                         Margin="0,8,0,0"
+                         FontSize="10"
+                         Foreground="{StaticResource TextMutedBrush}" />
+            </StackPanel>
+          </Border>
         </StackPanel>
-      </Border>
-
-      <Border Style="{StaticResource CardStyle}" Grid.Column="2" Margin="0,0,16,0">
-        <StackPanel>
-          <TextBlock Text="Device" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
-          <TextBlock Text="{Binding DeviceStatus}" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,0" />
-        </StackPanel>
-      </Border>
-
-      <Border Style="{StaticResource CardStyle}" Grid.Column="3">
-        <StackPanel>
-          <TextBlock Text="gnirehtet" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
-          <TextBlock Text="{Binding GnirehtetStatus}" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,0" />
-        </StackPanel>
-      </Border>
-    </Grid>
-
-    <GroupBox Header="Connected ADB devices" Grid.Row="2">
-      <DataGrid ItemsSource="{Binding Devices}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
-        <DataGrid.Columns>
-          <DataGridTextColumn Header="Serial" Binding="{Binding Serial}" Width="2*" />
-          <DataGridTextColumn Header="State" Binding="{Binding State}" Width="*" />
-          <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}" Width="*" />
-          <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="*" />
-          <DataGridTextColumn Header="Product" Binding="{Binding Product}" Width="*" />
-        </DataGrid.Columns>
-      </DataGrid>
-    </GroupBox>
-
-    <Grid Grid.Row="3" Margin="0,20,0,0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="260" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-
-      <Border Style="{StaticResource CardStyle}" Grid.Column="0" Margin="0,0,16,0">
-        <StackPanel>
-          <TextBlock Text="Manual controls" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" />
-          <Button Content="Start" Command="{Binding StartCommand}" Margin="0,12,0,0" Height="38" />
-          <Button Content="Stop" Command="{Binding StopCommand}" Margin="0,10,0,0" Height="38" Style="{StaticResource SecondaryButtonStyle}" />
-          <Button Content="Restart" Command="{Binding RestartCommand}" Margin="0,10,0,0" Height="38" Style="{StaticResource SecondaryButtonStyle}" />
-          <CheckBox Content="Stop gnirehtet on app exit"
-                    IsChecked="{Binding StopOnExit}"
-                    Margin="0,18,0,0" />
-        </StackPanel>
-      </Border>
-
-      <GroupBox Header="Event log" Grid.Column="1">
-        <ListBox ItemsSource="{Binding LogEntries}">
-          <ListBox.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Text="{Binding Display}" TextWrapping="Wrap" Foreground="{StaticResource TextSecondaryBrush}" />
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-      </GroupBox>
-    </Grid>
+      </Grid>
+    </ScrollViewer>
   </Grid>
 </Window>

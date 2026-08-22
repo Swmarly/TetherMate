@@ -1,6 +1,4 @@
 @echo off
 setlocal
-
-powershell -ExecutionPolicy Bypass -File "build.ps1"
-
-endlocal
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0build.ps1" %*
+exit /b %ERRORLEVEL%
